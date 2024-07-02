@@ -19,7 +19,7 @@
             <div class="mt-4">
                 <h3>予測</h3>
                 <p>次回生理予定日: {{ $nextPeriod->format('Y年m月d日') }}</p>
-                <p>次回排卵予定日: {{ $ovulation->format('Y年m月d日') }}</p>
+                <p>排卵予定日: {{ $ovulation->format('Y年m月d日') }}</p>
             </div>
         @endif
     </div>
