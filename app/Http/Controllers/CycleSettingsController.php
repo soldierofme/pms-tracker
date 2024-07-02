@@ -32,7 +32,7 @@ class CycleSettingsController extends Controller
             $ovulationAlerts = [];
         }
 
-        return view('cycle-settings.show', compact('settings', 'nextPeriod', 'ovulation', 'periodAlerts', 'ovulationAlerts'));
+        return view('dashboard', compact('settings', 'nextPeriod', 'ovulation', 'periodAlerts', 'ovulationAlerts'));
     }
 
     public function store(Request $request)
@@ -47,6 +47,6 @@ class CycleSettingsController extends Controller
             $request->only(['cycle_length', 'last_period_start_date'])
         );
 
-        return redirect()->route('cycle-settings.show')->with('success', '設定が保存されました。');
+        return redirect()->route('dashboard')->with('success', '設定が保存されました。');
     }
 }
