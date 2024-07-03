@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CycleSettings;
+use App\Models\CalendarSetting;
 use App\Services\CycleCalculatorService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -18,7 +19,9 @@ class CycleSettingsController extends Controller
 
     public function show()
     {
-        $settings = auth()->user()->cycleSettings;
+        $user = auth()->user();
+        $settings = $user->cycleSettings;
+        $calendarSettings = $user->calendarSetting ?? new CalendarSetting();
         
         if ($settings) {
             $nextPeriod = $this->calculator->calculateNextPeriod($settings->last_period_start_date, $settings->cycle_length);
@@ -32,7 +35,7 @@ class CycleSettingsController extends Controller
             $ovulationAlerts = [];
         }
 
-        return view('cycle-settings.show', compact('settings', 'nextPeriod', 'ovulation', 'periodAlerts', 'ovulationAlerts'));
+        return view('dashboard', compact('settings', 'calendarSettings', 'nextPeriod', 'ovulation', 'periodAlerts', 'ovulationAlerts'));
     }
 
     public function store(Request $request)
@@ -47,6 +50,6 @@ class CycleSettingsController extends Controller
             $request->only(['cycle_length', 'last_period_start_date'])
         );
 
-        return redirect()->route('cycle-settings.show')->with('success', '設定が保存されました。');
+        return redirect()->route('dashboard')->with('success', '設定が保存されました。');
     }
 }
