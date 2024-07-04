@@ -2,20 +2,13 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CycleSettingsController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\CalendarSettingController;
+use App\Http\Controllers\HealthChatController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-Auth::routes();
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Googleカレンダーの認証ルート
-Route::get('auth/google', [GoogleCalendarController::class, 'redirectToGoogle'])->name('auth.google');
-Route::get('auth/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback']);
+// ... (既存のコードはそのまま)
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [CycleSettingsController::class, 'show'])->name('dashboard');
@@ -32,7 +25,12 @@ Route::middleware('auth')->group(function () {
 
     // カレンダー設定更新ルート
     Route::put('/calendar-settings', [CalendarSettingController::class, 'update'])->name('calendar.settings.update');
+
+    // 健康状態質問チャットのルート
+    Route::get('/health-chat', [HealthChatController::class, 'index'])->name('health-chat.index');
 });
+
+require __DIR__.'/auth.php';
 
 // データベース接続テスト用ルート
 Route::get('/test-db-connection', function () {
@@ -43,9 +41,6 @@ Route::get('/test-db-connection', function () {
         return 'Failed to connect to the database: ' . $e->getMessage();
     }
 });
-Route::get('/logout', function () {
-    Auth::logout();
-    return redirect('/login');
-})->name('logout');
 
-require __DIR__.'/auth.php';
+Route::get('auth/google', [GoogleCalendarController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [GoogleCalendarController::class, 'handleGoogleCallback']);

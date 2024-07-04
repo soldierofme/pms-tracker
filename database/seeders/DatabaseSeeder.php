@@ -1,23 +1,21 @@
 <?php
 
-namespace Database\Seeders;
-
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        // User::factory(10)->create();
+        // 他のユーザーシード
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 子供ユーザーの追加
+        User::create([
+            'name' => 'Kanekotoko',
+            'email' => 'newstoko@toko.com',
+            'password' => Hash::make('toko0301'), // 必要に応じてパスワードを変更してください
+            'role' => 'child',
         ]);
     }
 }
